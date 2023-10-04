@@ -1,7 +1,7 @@
 {
-  "name": "fee-estimator",
+  "name": "avg-calculator",
   "version": "1.0.0",
-  "description": "",
+  "description": "Calculate the average gas fees in a block for all transactions.",
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
