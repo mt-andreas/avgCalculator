@@ -1,12 +1,12 @@
 import express from 'express';
-import { FeeEstimator } from './feeEstimator';
+import { AvgCalculator } from './avgCalculator';
 
 const app = express();
-const feeEstimator = new FeeEstimator();
+const avgCalculator = new AvgCalculator();
 
-app.get('/feeEstimate', async (req, res) => {
+app.get('/feeAverages', async (req, res) => {
   try {
-    const [lastBlockAvg, last5Avg, last30Avg] = await feeEstimator.getFeeEstimates();
+    const [lastBlockAvg, last5Avg, last30Avg] = await avgCalculator.getAverages();
     res.json({ lastBlockAvg, last5Avg, last30Avg });
   } catch (error: any) {
     res.status(500).json({ error: error.message });

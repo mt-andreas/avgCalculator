@@ -1,7 +1,6 @@
 import Web3 from 'web3';
 
-
-export class FeeEstimator {
+export class AvgCalculator {
   private web3: Web3;
   private transactionCount : number;
   private BlockCount: number;
@@ -71,7 +70,7 @@ export class FeeEstimator {
     return this.lastBlockAvgFee;
   }
 
-  public async getFeeEstimates(): Promise<number[]> {
+  public async getAverages(): Promise<number[]> {
     let total = 0;
     let tx = 0;
     

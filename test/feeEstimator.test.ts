@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { FeeEstimator } from '../src/feeEstimator';
+import { AvgCalculator } from '../src/avgCalculator';
 
-describe('FeeEstimator', () => {
+describe('avgCalculator', () => {
   it('should return fee estimates', async () => {
-    const feeEstimator = new FeeEstimator();
-    const [lastBlockAvg, last5Avg, last30Avg] = await feeEstimator.getFeeEstimates();
+    const avgCalculator = new AvgCalculator();
+    const [lastBlockAvg, last5Avg, last30Avg] = await avgCalculator.getAverages();
 
     expect(lastBlockAvg).to.be.a('number');
     expect(last5Avg).to.be.a('number');
