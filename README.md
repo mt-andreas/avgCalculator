@@ -1,4 +1,4 @@
-# feeEstimator
+# avgCalculator
 Retrieves the average gas fees for the last block, last 5 blocks and last 30 blocks.
 
 # Setup
