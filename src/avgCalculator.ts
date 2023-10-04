@@ -3,7 +3,6 @@ import Web3 from 'web3';
 export class AvgCalculator {
   private web3: Web3;
   private transactionCount : number;
-  private BlockCount: number;
   private lastBlockAvgFee : number;
   private last5Avg: number;
   private last30Avg: number;
@@ -15,7 +14,6 @@ export class AvgCalculator {
     this.web3 = new Web3('wss://goerli.infura.io/ws/v3/9746fa8e8e6b4f31b2315aca21a39f71');
     this.subscribeToNewBlocks();
     this.transactionCount = 0;
-    this.BlockCount = 0;
     this.lastBlockAvgFee = 0;
     this.last5Avg = 0;
     this.last30Avg = 0;
@@ -39,21 +37,30 @@ export class AvgCalculator {
 
   private async handleNewBlock(blockNumber: number) {
     this.transactionCount = 0;
-    this.BlockCount++;
     const block = await this.web3.eth.getBlock(blockNumber);
     const totalFee = await this.calculateAvgTotalFee(block);
-    console.log(`Total fee for block ${blockNumber}: ${totalFee} ether`);
+    console.log(`Stats for block: ${blockNumber}`);
+    console.log(`Total fee: ${totalFee} ether`);
+    console.log(`Total gas used: ${block.gasUsed}`);
+    console.log(`Base Fee: ${this.web3.utils.fromWei(Number(block.baseFeePerGas), "ether")} ether`);
+    console.log('*************');
+
+
   }
 
   private async calculateAvgTotalFee(block: any): Promise<number> {
     let TotalFee = 0;
     try{
-
-        await Promise.all(block.transactions.map(async (tx: any) => {
-            this.transactionCount++;
-            const data = await this.web3.eth.getTransactionReceipt(tx);
-            TotalFee += Number(data.effectiveGasPrice) * Number(data.gasUsed);
-        }));
+        if (block.transactions.length > 0) {
+          await Promise.all(block.transactions.map(async (tx: any) => {
+              this.transactionCount++;
+              const value = (await this.web3.eth.getTransaction(tx)).value;
+              if (Number(value) > 0){ //only calculate fees for eth transactions
+                const data = await this.web3.eth.getTransactionReceipt(tx);
+                TotalFee += Number(data.effectiveGasPrice) * Number(data.gasUsed);
+              }
+          }));
+        }
     }
     catch(e){
         console.log(e);
