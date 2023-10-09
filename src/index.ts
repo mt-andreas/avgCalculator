@@ -1,5 +1,13 @@
+const dotenv = require('dotenv');
+const result = dotenv.config();
+
 import express from 'express';
 import { AvgCalculator } from './avgCalculator';
+
+
+if (result.error) {
+  throw result.error;
+}
 
 const app = express();
 const avgCalculator = new AvgCalculator();

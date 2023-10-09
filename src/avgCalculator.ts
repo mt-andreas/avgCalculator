@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+const infuraApiKey = process.env.INFURA_API_KEY;
 
 export class AvgCalculator {
   private web3: Web3;
@@ -11,7 +12,7 @@ export class AvgCalculator {
   private last30Totals: { TotalFee: number; totalTxs: number }[];
   constructor() {
     console.log('Starting to listen for blocks...');
-    this.web3 = new Web3('wss://goerli.infura.io/ws/v3/9746fa8e8e6b4f31b2315aca21a39f71');
+    this.web3 = new Web3(`wss://goerli.infura.io/ws/v3/${infuraApiKey}`);
     this.subscribeToNewBlocks();
     this.transactionCount = 0;
     this.lastBlockAvgFee = 0;
